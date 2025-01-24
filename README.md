@@ -1,15 +1,42 @@
-# Streamline
+# Streamline DAW  
 
-Project: Streamline, a Digital Audio Workstation that is designed to make music production easier.
+## Overview  
+Streamline DAW is a beginner-friendly, AI-powered Digital Audio Workstation (DAW) designed to make music production simple and accessible.  
+This app is inspired by Logic Pro, featuring a simplified user interface and AI tools to help new users create professional-quality music.  
 
-Will use Django for backend and Electron for frontend
+## Features  
+- **AI Assistance**:  
+  - AI generates track templates based on user input (e.g., genres or song inspirations).  
+  - Real-time assistance with mixing, such as fixing EQ issues.  
 
-Many python libraries such as tensorflow and soundfile will be used for AI implementation and audio related functions. 
+- **Educational Integration**:  
+  - Tooltips, mini-guides, and a chatbot to help users learn music production basics.  
 
+- **Simplified Audio Tools**:  
+  - Preset-based effects for EQ, reverb, and more.  
+  - Visual tools for spatial sound design.  
 
-Research:
-Many DAWs such as Logic Pro, FL Studio, Ableton, are expensive to obtain and have a steep learning curve and need for music theory knowledge. Lots of different elements such as MIDI, Equalizer settings, reverb, synthesizers, loops, regions, tracks, etc can be very difficult to grasp without proper education/lessons.
+## Setup Instructions  
 
-I am calling it Streamline. since it  boasts "quick learning" and also since it sounds cool
+### Prerequisites  
+Before setting up the project, ensure you have the following installed:  
+1. **Node.js** (for the frontend):  
+   - [Download Node.js](https://nodejs.org/)  
+   - Verify installation:  
+     ```bash
+     node -v  
+     npm -v  
+     ```  
 
-AI will assist the user all the time when using the app, and will teach them music theory as they make music. Most features on normal DAWs that have lots of buttons and technical terms will be simplified and AI - assisted
+2. **Python** (for the backend):  
+   - [Download Python](https://www.python.org/downloads/)  
+   - Verify installation:  
+     ```bash
+     python --version  
+     pip --version  
+     ```  
+
+3. **Visual Studio Code (or any code editor)**  
+
+### Project Structure  
+After setup, your project should have the following structure:  
