@@ -56,3 +56,22 @@ Streamline integrates AI to assist users in the following ways:
 6. **Documentation and Packaging:**
    - Write clear user guides and in-app help sections.
    - Package the app for easy installation.
+
+
+
+Mentor Stuff:
+
+Qualities I’m Seeking in a Mentor:
+
+Patience: I value a mentor who is patient and understanding, especially when I’m learning new concepts or troubleshooting challenges.
+Easygoing Nature: I prefer someone who is approachable, flexible, and creates a comfortable environment for open communication.
+Skills I Need from a Mentor:
+
+AI/ML Expertise: I’m looking for someone with experience in artificial intelligence and machine learning to guide me through technical challenges.
+React Proficiency: Since my project involves React, I’d like a mentor who is familiar with React development and can provide relevant advice.
+Questions to Ask a Potential Mentor:
+
+“Do you have experience with AI and React?”
+“How do you prefer to provide feedback or guidance—through code reviews, brainstorming sessions, or regular check-ins?”
+“Can you share an example of how you’ve helped someone with a similar project or skill set?”
+
