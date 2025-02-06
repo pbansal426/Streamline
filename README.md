@@ -29,11 +29,97 @@ Perform rigorous testing on both macOS and Windows environments.
 Collect feedback from beginner users to refine the app.
 Write clear user guides and in-app help sections.
 Package the app for easy installation.
+
+
+
+
+
+
+Here are the dependencies we will use:
+{DEPENDENCIES}
+[Frontend (Electron + React + Vite)]
+
+Electron – Powers the desktop app by combining web technologies (HTML, CSS, JS) into a native-like experience.
+
+React – UI framework for building dynamic and modular components.
+
+Vite – Fast build tool for React, providing instant updates and efficient bundling.
+
+electron-better-ipc – Simplifies communication between Electron’s main and renderer processes.
+
+electron-store – Stores user preferences and project settings persistently.
+
+tailwindcss – Utility-first CSS framework for efficient styling.
+
+eslint & prettier – Code quality tools for enforcing consistent code formatting.
+
+
+[Backend (Flask + FastAPI)]
+
+Flask – Lightweight Python web framework to handle API requests from Electron frontend.
+
+FastAPI – High-performance API framework for handling AI-related and real-time tasks.
+
+flask-cors – Enables Cross-Origin Resource Sharing (CORS) for frontend-backend communication.
+
+socket.io – Real-time communication between frontend and backend (optional).
+
+pipenv – Dependency and virtual environment management for Python.
+
+
+[AI & Machine Learning]
+
+Ollama – Local AI inference engine for running LLMs without internet dependency.
+
+torch (PyTorch) – Core deep learning framework for AI-based recommendations and analysis.
+
+transformers (Hugging Face) – Pretrained AI models for analyzing user input and assisting with music theory.
+
+sentencepiece – Tokenization tool for AI models dealing with text-based interactions.
+
+scikit-learn – Provides AI-powered recommendations based on user behavior.
+
+numpy & scipy – Math libraries used in AI and audio analysis.
+
+
+[Audio Processing & Engine]
+
+pydub – Handles audio file manipulation (cutting, merging, converting).
+
+soundfile – Reads and writes various audio formats with high-quality precision.
+
+aubio – Analyzes pitch, beat detection, and onset detection for AI-assisted mixing.
+
+librosa – Provides advanced audio analysis tools (e.g., spectrograms, tempo detection).
+
+ffmpeg – Required for audio conversion and processing.
+
+fluidsynth – Software synthesizer for rendering MIDI into actual sounds.
+
+
+[Other Utilities]
+
+dotenv – Loads environment variables (e.g., API keys, config settings).
+
+loguru – Provides better logging for debugging.
+
+requests – Handles API requests for fetching external data if needed.
+
+click – CLI tool for managing backend commands.
+{end of dependencies list}
+
+
+
+
+
 Mentor Stuff:
 Qualities I’m Seeking in a Mentor:
 Patience: I value a mentor who is patient and understanding, especially when I’m learning new concepts or troubleshooting challenges. Easygoing Nature: I prefer someone who is approachable, flexible, and creates a comfortable environment for open communication. Skills I Need from a Mentor:
 AI/ML Expertise: I’m looking for someone with experience in artificial intelligence and machine learning to guide me through technical challenges. React Proficiency: Since my project involves React, I’d like a mentor who is familiar with React development and can provide relevant advice. Questions to Ask a Potential Mentor:
 “Do you have experience with AI and React?” “How do you prefer to provide feedback or guidance—through code reviews, brainstorming sessions, or regular check-ins?” “Can you share an example of how you’ve helped someone with a similar project or skill set?”
+
+
+
 
 AI PROMPT:
 I am creating a desktop app called "Streamline" 
