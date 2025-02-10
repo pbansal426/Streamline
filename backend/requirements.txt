@@ -24,7 +24,7 @@ soundfile
 scipy
 librosa
 wave
-essentia
+#essentia
 
 # Data utilities for AI
 requests
