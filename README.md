@@ -128,6 +128,15 @@ the aim is to make music production simpler and more accessible. AI will be a hu
 
 
 Current Instructions (Feb 10)
+
+1)
+First we need to install Ollama. Download ollama at https://ollama.com/download (choose your operating system)
+
+Setup the ollama command line tools, then run:
+
+ollama pull deepseek-r1
+
+2)
 We need two terminals: one for backend, and one for frontend.
 
 Copy and paste this line into the backend terminal:
