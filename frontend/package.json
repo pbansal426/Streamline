@@ -4,11 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "vite":"vite",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
     "build": "tsc -b && vite build",
+    "backend": "cd backend && uvicorn main:app --reload --host 127.0.0.1 --port 8000",
+    "frontend": "cd frontend && vite",
     "lint": "eslint .",
-    "preview": "vite preview"
-    
+    "preview": "vite preview",
+    "electron": "wait-on tcp:5173 tcp:5174 tcp:5175 && electron .",
+    "start": "concurrently \"npm run frontend\" \"npm run electron\""
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
