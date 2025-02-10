@@ -143,7 +143,7 @@ We need two terminals: one for backend, and one for frontend.
 
 Copy and paste this line into the backend terminal:
 
-cd backend && python3 -r venv venv && source venv/bin/activate && pip install -r backend/requirements.txt && uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
+cd backend && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt && uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
 
 Copy and paste this line into the frontend terminal:
 cd frontend && npm install && npm run dev
