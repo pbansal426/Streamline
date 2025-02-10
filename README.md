@@ -131,7 +131,9 @@ Current Instructions (Feb 10)
 
 1)
 First we need to install Ollama. Download ollama at https://ollama.com/download (choose your operating system)
-
+(if you are on github codespaces, run this:
+curl -fsSL https://ollama.com/install.sh | sh
+)
 Setup the ollama command line tools, then run:
 
 ollama pull deepseek-r1
