@@ -26,7 +26,7 @@ const AIComponent = () => {
       }
 
       const data = await res.json();
-      setResponse(data.response); // Set the response to display
+      setResponse(data.response); // Set AI response
     } catch (error) {
       setResponse("Error: " + error.message); // Handle errors
     } finally {
