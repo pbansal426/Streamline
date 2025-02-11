@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Grid, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 
 const TrackArea = () => {
   return (

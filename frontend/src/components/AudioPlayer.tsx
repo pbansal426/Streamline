@@ -1,47 +1,46 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import * as Tone from "tone";
 
 const AudioPlayer = () => {
-  const [audioFile, setAudioFile] = useState<File | null>(null); // Audio file state
-  const [loading, setLoading] = useState(false); // Loading state
-  const [analysisResult, setAnalysisResult] = useState<any>(null); // Analysis result (tempo, etc.)
-  const [audioPlayer, setAudioPlayer] = useState<Tone.Player | null>(null); // Tone.js player
-  const [isPlaying, setIsPlaying] = useState(false); // Track if the audio is playing
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState<any>(null);
+  const [audioPlayer, setAudioPlayer] = useState<Tone.Player | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  // Handle audio file change
   const handleAudioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setAudioFile(e.target.files[0]); // Save selected audio file
+      setAudioFile(e.target.files[0]);
     }
   };
 
-  // Function to load and play audio using Tone.js
   const loadAudio = async () => {
+    if (!audioFile) return;
+    
     setLoading(true);
     try {
-      if (audioFile) {
-        const newPlayer = new Tone.Player(); // Create new Tone.js player instance
-        await newPlayer.load(URL.createObjectURL(audioFile)); // Load audio from file input
-        newPlayer.toDestination(); // Connect to output (speakers)
-        setAudioPlayer(newPlayer); // Save the player instance
-        console.log("Audio Loaded");
+      const newPlayer = new Tone.Player();
+      await newPlayer.load(URL.createObjectURL(audioFile));
+      newPlayer.toDestination();
+      setAudioPlayer(newPlayer);
 
-        // Send audio file to backend for analysis
-        const formData = new FormData();
-        formData.append("file", audioFile);
+      console.log("Audio Loaded");
 
-        const res = await fetch("http://127.0.0.1:8000/audio/analyze/", {
-          method: "POST",
-          body: formData,
-        });
+      // Send file to backend for analysis
+      const formData = new FormData();
+      formData.append("file", audioFile);
 
-        if (!res.ok) {
-          throw new Error("Failed to analyze audio");
-        }
+      const res = await fetch("http://127.0.0.1:8000/audio/analyze/", {
+        method: "POST",
+        body: formData,
+      });
 
-        const data = await res.json();
-        setAnalysisResult(data); // Set analysis result (e.g., tempo)
+      if (!res.ok) {
+        throw new Error("Failed to analyze audio");
       }
+
+      const data = await res.json();
+      setAnalysisResult(data);
     } catch (error) {
       console.error("Error loading audio:", error);
     } finally {
@@ -51,48 +50,59 @@ const AudioPlayer = () => {
 
   const handlePlay = () => {
     if (audioPlayer) {
-      Tone.start(); // Ensure audio context is started (especially for mobile browsers)
-      audioPlayer.start(); // Start playing the audio
-      setIsPlaying(true); // Set playing state
+      Tone.start();
+      audioPlayer.start();
+      setIsPlaying(true);
     }
   };
 
   const handleStop = () => {
     if (audioPlayer) {
-      audioPlayer.stop(); // Stop playing the audio
-      setIsPlaying(false); // Set stop state
+      audioPlayer.stop();
+      setIsPlaying(false);
     }
   };
 
   return (
-    <div>
+    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif", background: "#222", color: "#fff", borderRadius: "10px" }}>
       <h2>Audio Player & Analysis</h2>
 
       {/* Audio File Input */}
-      <input type="file" onChange={handleAudioChange} disabled={loading} />
+      <input type="file" onChange={handleAudioChange} disabled={loading} style={{ marginBottom: "10px" }} />
 
       {/* Load & Analyze Audio */}
-      <button onClick={loadAudio} disabled={loading || !audioFile}>
-        {loading ? "Loading Audio..." : "Load & Analyze Audio"}
+      <button onClick={loadAudio} disabled={loading || !audioFile} style={{ marginRight: "10px" }}>
+        {loading ? "Loading..." : "Load & Analyze Audio"}
       </button>
 
       {/* Play and Stop Buttons */}
-      <div>
-        <button onClick={handlePlay} disabled={isPlaying || loading || !audioPlayer}>
-          Play Audio
-        </button>
-        <button onClick={handleStop} disabled={!isPlaying || loading}>
-          Stop Audio
-        </button>
-      </div>
+      <button onClick={handlePlay} disabled={isPlaying || loading || !audioPlayer} style={{ marginRight: "5px" }}>
+        ▶ Play
+      </button>
+      <button onClick={handleStop} disabled={!isPlaying || loading}>
+        ⏹ Stop
+      </button>
 
-      {/* Display Analysis Result (Tempo, etc.) */}
+      {/* Display Analysis Results */}
       {analysisResult && (
-        <div>
+        <div style={{ marginTop: "20px", padding: "10px", background: "#333", borderRadius: "8px" }}>
           <h3>Audio Analysis:</h3>
-          <p>Tempo: {analysisResult.bpm} BPM</p>
-          <p>Pitch: {analysisResult.pitch}</p>
-          <p>Loudness: {analysisResult.loudness}</p>
+          <p><strong>Tempo:</strong> {analysisResult.bpm} BPM</p>
+          <p><strong>Pitch:</strong> {analysisResult.pitch.toFixed(2)} Hz</p>
+          <p><strong>Loudness:</strong> {analysisResult.loudness.toFixed(2)} dB</p>
+          <p><strong>Key:</strong> {analysisResult.key} (Strength: {analysisResult.key_strength.toFixed(2)})</p>
+          <p><strong>Genre:</strong> {analysisResult.genre}</p>
+          <p><strong>Spectral Centroid:</strong> {analysisResult.spectral_centroid.toFixed(2)} Hz</p>
+          <p><strong>Spectral Flux:</strong> {analysisResult.spectral_flux.toFixed(2)}</p>
+          <p><strong>Dynamic Complexity:</strong> {analysisResult.dynamic_complexity.toFixed(2)}</p>
+
+          {/* Display MFCC Summary */}
+          {analysisResult.mfcc_coeffs && (
+            <div>
+              <h4>MFCC (Timbre) Summary:</h4>
+              <p>Mean MFCC Coefficients: {analysisResult.mfcc_coeffs.slice(0, 5).map((val: number) => val.toFixed(2)).join(", ")}...</p>
+            </div>
+          )}
         </div>
       )}
     </div>

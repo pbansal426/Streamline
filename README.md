@@ -149,6 +149,7 @@ Copy and paste this line into the frontend terminal:
 cd frontend && npm install && npm run dev
 
 run backend:
-cd backend && source venv/bin/activate && uvicorn main:app --reload --host 127.0.0.1 --port 8000
+cd backend && source venv/bin/activate
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
 run frontend:
 cd frontend && npm run dev
