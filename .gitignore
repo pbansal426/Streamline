@@ -39,3 +39,10 @@ migrations/
 # Ignore system files
 Thumbs.db
 ehthumbs.db
+
+#Clones
+
+Projucer.app
+DemoRunner.app
+examples/
+modules/
