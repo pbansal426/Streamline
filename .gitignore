@@ -46,3 +46,7 @@ Projucer.app
 DemoRunner.app
 examples/
 modules/
+
+JuceLibraryCode/
+Builds/
+JUCE/

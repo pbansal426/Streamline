@@ -500,3 +500,6 @@ Next Steps - Where to Begin Right Now:
 Complete Module 1 (Setting Up Environment & Fundamentals): Get your JUCE environment set up and understand basic project structure, components, and graphics.
 Work through Module 2 (Audio Basics): Implement basic audio playback and recording. This is a crucial foundation.
 Then, move progressively through the modules in order. Don't jump ahead too much. Build a solid understanding of each module before moving to the next.
+
+
+Start using tuneflow
