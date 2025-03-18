@@ -13,17 +13,17 @@
 //==============================================================================
 /**
 */
-class StreamlineAudioProcessor  : public juce::AudioProcessor
+class StreamlineAIAudioProcessor  : public juce::AudioProcessor
 {
 public:
     //==============================================================================
-    StreamlineAudioProcessor();
-    ~StreamlineAudioProcessor() override;
+    StreamlineAIAudioProcessor();
+    ~StreamlineAIAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
-
+    void processPrompt (const juce::String& prompt);
    #ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
    #endif
@@ -55,5 +55,5 @@ public:
 
 private:
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StreamlineAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StreamlineAIAudioProcessor)
 };
