@@ -44,6 +44,10 @@ void StreamlineAIAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
+void StreamlineAIAudioProcessor::processPrompt (const juce::String& prompt)
+{
+    // ... your code here ...
+}
 
 void StreamlineAIAudioProcessor::releaseResources()
 {
@@ -166,59 +170,6 @@ void StreamlineAIAudioProcessor::changeProgramName (int index, const juce::Strin
 {
 }
 
-void StreamlineAIAudioProcessor::processPrompt (const juce::String& prompt)
-{
-    juce::Logger::outputDebugString ("User entered prompt: " + prompt);
-
-    // --- Placeholder for sending to AI model ---
-    // Create a separate thread to avoid blocking the audio thread
-    std::thread([prompt]() {
-        // --- Dummy socket communication for now ---
-        int sock = 0;
-        struct sockaddr_in serv_addr;
-        const char* message = prompt.toStdString().c_str();
-        const int port = 12345; // Choose a port
-
-#ifdef JUCE_WINDOWS
-        WSADATA wsaData;
-        if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-            juce::Logger::outputDebugString("WSAStartup failed");
-            return;
-        }
-#endif
-
-        if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-            juce::Logger::outputDebugString("Socket creation error");
-            return;
-        }
-
-        serv_addr.sin_family = AF_INET;
-        serv_addr.sin_port = htons(port);
-
-        // Convert IPv4 or IPv6 addresses from text to binary form
-        if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0) {
-            juce::Logger::outputDebugString("Invalid address/ Address not supported");
-            close_socket(sock);
-            return;
-        }
-
-        if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-            juce::Logger::outputDebugString("Connection Failed");
-            close_socket(sock);
-            return;
-        }
-        send(sock, message, strlen(message), 0 );
-        juce::Logger::outputDebugString("Prompt sent to Python server");
-
-        // --- Placeholder for receiving audio data ---
-        // ... code to receive the generated audio data and store it ...
-
-        close_socket(sock);
-#ifdef JUCE_WINDOWS
-        WSACleanup();
-#endif
-    }).detach();
-}
 
 void StreamlineAIAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
