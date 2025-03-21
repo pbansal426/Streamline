@@ -30,6 +30,9 @@ StreamlineAIAudioProcessorEditor::StreamlineAIAudioProcessorEditor (StreamlineAI
 
     generateButton.addListener (this);
     addAndMakeVisible (generateButton);
+    responseLabel.setText("Waiting for response...", juce::dontSendNotification);
+    responseLabel.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(responseLabel);
 }
 
 StreamlineAIAudioProcessorEditor::~StreamlineAIAudioProcessorEditor()
@@ -54,13 +57,19 @@ void StreamlineAIAudioProcessorEditor::resized()
 
     promptTextEditor.setBounds (20, 50, getWidth() - 40, 30);
     generateButton.setBounds (20, 90, 100, 30); // Position the button below the text box
+    responseLabel.setBounds(20, 130, getWidth() - 40, 30); // Position below the button
+
 }
 
-void StreamlineAIAudioProcessorEditor::buttonClicked (juce::Button* button)
+void StreamlineAIAudioProcessorEditor::buttonClicked(juce::Button* button)
 {
     if (button == &generateButton)
     {
         juce::String userPrompt = promptTextEditor.getText();
-        audioProcessor.processPrompt(userPrompt); // Call a method in the processor
+        audioProcessor.processPrompt(userPrompt);
+        
+        // Get the response and update the label
+        juce::String response = audioProcessor.getResponseText();
+        responseLabel.setText(response, juce::dontSendNotification);
     }
 }

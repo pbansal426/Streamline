@@ -29,6 +29,7 @@ public:
     void buttonClicked (juce::Button* button) override;
 
 private:
+    juce::Label responseLabel;
     // This reference is provided as a quick way to get access to the
     // plugin's parameter state.
     StreamlineAIAudioProcessor& audioProcessor;

@@ -1,3 +1,4 @@
+//PluginProcessor.h
 /*
   ==============================================================================
 
@@ -16,6 +17,8 @@
 class StreamlineAIAudioProcessor  : public juce::AudioProcessor
 {
 public:
+    juce::String getResponseText() const { return responseText; }
+    
     //==============================================================================
     StreamlineAIAudioProcessor();
     ~StreamlineAIAudioProcessor() override;
@@ -56,4 +59,5 @@ public:
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StreamlineAIAudioProcessor)
+    juce::String responseText; // Stores the response for the UI
 };

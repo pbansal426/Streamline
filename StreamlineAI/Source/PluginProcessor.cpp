@@ -47,6 +47,7 @@ void StreamlineAIAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
 void StreamlineAIAudioProcessor::processPrompt (const juce::String& prompt)
 {
     // ... your code here ...
+    responseText = "Received prompt: " + prompt;
 }
 
 void StreamlineAIAudioProcessor::releaseResources()
