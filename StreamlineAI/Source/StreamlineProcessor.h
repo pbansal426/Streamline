@@ -2,11 +2,11 @@
 
 #include <JuceHeader.h>
 
-class StreamlineAIProcessor : public juce::AudioProcessor
+class StreamlineProcessor : public juce::AudioProcessor
 {
 public:
-    StreamlineAIProcessor();
-    ~StreamlineAIProcessor() override;
+    StreamlineProcessor();
+    ~StreamlineProcessor() override;
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
@@ -37,11 +37,8 @@ public:
     
     // Project info methods
     double getProjectTempo() const;
-    void setProjectTempo(double tempo);
     int getProjectTimeSigNumerator() const;
-    void setProjectTimeSigNumerator(int num);
     int getProjectTimeSigDenominator() const;
-    void setProjectTimeSigDenominator(int denom);
     juce::StringArray getProjectTrackInfo() const;
     
     // Callback for when generation is complete
@@ -73,11 +70,9 @@ private:
     int timeSigNumerator = 4;
     int timeSigDenominator = 4;
     
-    // Output format
-    bool outputAsMidi = true; // Default to MIDI output
-    
     // Mock function to generate AI questions (will be replaced with actual AI)
     void generateAIQuestions(const juce::String& initialPrompt);
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(StreamlineAIProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(StreamlineProcessor)
 };
+

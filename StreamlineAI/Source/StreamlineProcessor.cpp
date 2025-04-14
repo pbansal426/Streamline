@@ -1,34 +1,53 @@
-#include "PluginProcessor.h"
-#include "PluginEditor.h"
+#include "StreamlineProcessor.h"
+#include "StreamlineEditor.h"
 
-StreamlineAIProcessor::StreamlineAIProcessor()
+StreamlineProcessor::StreamlineProcessor()
     : AudioProcessor(BusesProperties()
                      .withInput("Input", juce::AudioChannelSet::stereo(), true)
                      .withOutput("Output", juce::AudioChannelSet::stereo(), true))
 {
-    // Initialize with default values
-    projectTempo = 120.0;
-    timeSigNumerator = 4;
-    timeSigDenominator = 4;
+    // Try to get host information
+    if (auto* playHead = getPlayHead())
+    {
+        juce::AudioPlayHead::CurrentPositionInfo posInfo;
+        if (playHead->getCurrentPosition(posInfo))
+        {
+            projectTempo = posInfo.bpm;
+            timeSigNumerator = posInfo.timeSigNumerator;
+            timeSigDenominator = posInfo.timeSigDenominator;
+        }
+    }
 }
 
-StreamlineAIProcessor::~StreamlineAIProcessor()
+StreamlineProcessor::~StreamlineProcessor()
 {
 }
 
-void StreamlineAIProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+void StreamlineProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     // Initialize buffers and prepare for playback
     generatedAudio.setSize(2, samplesPerBlock);
     generatedAudio.clear();
+    
+    // Try to get updated host information
+    if (auto* playHead = getPlayHead())
+    {
+        juce::AudioPlayHead::CurrentPositionInfo posInfo;
+        if (playHead->getCurrentPosition(posInfo))
+        {
+            projectTempo = posInfo.bpm;
+            timeSigNumerator = posInfo.timeSigNumerator;
+            timeSigDenominator = posInfo.timeSigDenominator;
+        }
+    }
 }
 
-void StreamlineAIProcessor::releaseResources()
+void StreamlineProcessor::releaseResources()
 {
     // Free resources when plugin is not being used
 }
 
-void StreamlineAIProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void StreamlineProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     buffer.clear();
     
@@ -86,87 +105,84 @@ void StreamlineAIProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
             }
         }
     }
+    
+    // Update project tempo if it changes
+    if (auto* playHead = getPlayHead())
+    {
+        juce::AudioPlayHead::CurrentPositionInfo posInfo;
+        if (playHead->getCurrentPosition(posInfo))
+        {
+            projectTempo = posInfo.bpm;
+            timeSigNumerator = posInfo.timeSigNumerator;
+            timeSigDenominator = posInfo.timeSigDenominator;
+        }
+    }
 }
 
-juce::AudioProcessorEditor* StreamlineAIProcessor::createEditor()
+juce::AudioProcessorEditor* StreamlineProcessor::createEditor()
 {
-    return new StreamlineAIEditor(*this);
+    return new StreamlineEditor(*this);
 }
 
-bool StreamlineAIProcessor::hasEditor() const
+bool StreamlineProcessor::hasEditor() const
 {
     return true;
 }
 
-const juce::String StreamlineAIProcessor::getName() const
+const juce::String StreamlineProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-int StreamlineAIProcessor::getNumPrograms()
+int StreamlineProcessor::getNumPrograms()
 {
     return 1;
 }
 
-int StreamlineAIProcessor::getCurrentProgram()
+int StreamlineProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void StreamlineAIProcessor::setCurrentProgram(int index)
+void StreamlineProcessor::setCurrentProgram(int index)
 {
 }
 
-const juce::String StreamlineAIProcessor::getProgramName(int index)
+const juce::String StreamlineProcessor::getProgramName(int index)
 {
     return {};
 }
 
-void StreamlineAIProcessor::changeProgramName(int index, const juce::String& newName)
+void StreamlineProcessor::changeProgramName(int index, const juce::String& newName)
 {
 }
 
-void StreamlineAIProcessor::getStateInformation(juce::MemoryBlock& destData)
+void StreamlineProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
     // Store plugin state
 }
 
-void StreamlineAIProcessor::setStateInformation(const void* data, int sizeInBytes)
+void StreamlineProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     // Restore plugin state
 }
 
-double StreamlineAIProcessor::getProjectTempo() const
+double StreamlineProcessor::getProjectTempo() const
 {
     return projectTempo;
 }
 
-void StreamlineAIProcessor::setProjectTempo(double tempo)
-{
-    projectTempo = tempo;
-}
-
-int StreamlineAIProcessor::getProjectTimeSigNumerator() const
+int StreamlineProcessor::getProjectTimeSigNumerator() const
 {
     return timeSigNumerator;
 }
 
-void StreamlineAIProcessor::setProjectTimeSigNumerator(int num)
-{
-    timeSigNumerator = num;
-}
-
-int StreamlineAIProcessor::getProjectTimeSigDenominator() const
+int StreamlineProcessor::getProjectTimeSigDenominator() const
 {
     return timeSigDenominator;
 }
 
-void StreamlineAIProcessor::setProjectTimeSigDenominator(int denom)
-{
-    timeSigDenominator = denom;
-}
-
-juce::StringArray StreamlineAIProcessor::getProjectTrackInfo() const
+juce::StringArray StreamlineProcessor::getProjectTrackInfo() const
 {
     // In a real implementation, you would try to get track info from the host
     // This is a placeholder that returns mock data
@@ -178,7 +194,7 @@ juce::StringArray StreamlineAIProcessor::getProjectTrackInfo() const
     return tracks;
 }
 
-void StreamlineAIProcessor::generateMusicFromPrompt(const juce::String& prompt)
+void StreamlineProcessor::generateMusicFromPrompt(const juce::String& prompt)
 {
     // First, generate AI questions based on the prompt
     generateAIQuestions(prompt);
@@ -251,79 +267,86 @@ void StreamlineAIProcessor::generateMusicFromPrompt(const juce::String& prompt)
         currentPosition = 0;
         isPlaying = true;
         
-        // Notify the editor based on output format
-        if (outputAsMidi) {
-            if (onMidiGenerated)
-                onMidiGenerated(generatedMidi);
-        } else {
-            // In a real implementation, you would render audio here
-            // For now, we'll just notify with the same MIDI data
-            if (onAudioGenerated)
-                onAudioGenerated(generatedAudio);
-        }
+        // Notify the editor
+        if (onMidiGenerated)
+            onMidiGenerated(generatedMidi);
     });
 }
 
-void StreamlineAIProcessor::processFollowUpAnswers(const juce::StringArray& answers)
+void StreamlineProcessor::processFollowUpAnswers(const juce::StringArray& answers)
 {
     // Process the follow-up answers to refine the generation
-    
-    // First answer determines output type
-    if (answers.size() > 0) {
-        outputAsMidi = (answers[0] == "MIDI");
-        juce::Logger::writeToLog("Output format: " + juce::String(outputAsMidi ? "MIDI" : "Audio"));
-    }
-    
-    // Log all answers for debugging
-    for (int i = 0; i < answers.size(); ++i) {
-        juce::Logger::writeToLog("Question " + juce::String(i+1) + " answer: " + answers[i]);
-    }
-    
-    // In a real implementation, you would:
-    // 1. Parse all the answers to extract parameters
-    // 2. Format them into a request for your AI service
-    // 3. Send the request to generate the appropriate output
+    // This would typically be sent along with the original prompt to the AI service
     
     // For now, we'll just log the answers
     juce::String answersStr = answers.joinIntoString(", ");
-    juce::Logger::writeToLog("All answers: " + answersStr);
+    juce::Logger::writeToLog("Follow-up answers: " + answersStr);
     
     // In a real implementation, you would include these answers in your API call
 }
 
-void StreamlineAIProcessor::generateAIQuestions(const juce::String& initialPrompt)
+void StreamlineProcessor::generateAIQuestions(const juce::String& initialPrompt)
 {
-    // Initialize arrays for questions
+    // This is a mock function that simulates AI generating questions
+    // In a real implementation, this would call the AI service to get dynamic questions
+    
+    // For now, we'll create some sample questions based on the initial prompt
     juce::StringArray questions;
     juce::Array<juce::StringArray> possibleAnswers;
     juce::Array<int> questionTypes;
     
-    // Question 1: Output format (MIDI or Audio)
-    questions.add("Do you want MIDI or Audio output?");
-    juce::StringArray formatOptions;
-    formatOptions.add("MIDI");
-    formatOptions.add("Audio");
-    possibleAnswers.add(formatOptions);
+    // Question 1: Genre (multiple choice)
+    questions.add("What genre should the music be?");
+    juce::StringArray genreOptions;
+    genreOptions.add("Rock");
+    genreOptions.add("Jazz");
+    genreOptions.add("Classical");
+    genreOptions.add("Electronic");
+    genreOptions.add("Hip Hop");
+    possibleAnswers.add(genreOptions);
     questionTypes.add(0); // Multiple choice
     
-    // Question 2: Tempo
-    questions.add("How would you like to specify the tempo?");
-    juce::StringArray tempoOptions;
-    tempoOptions.add("Enter a specific BPM");
-    tempoOptions.add("Use a tempo description");
-    possibleAnswers.add(tempoOptions);
+    // Question 2: Tempo (if not detected from project)
+    if (projectTempo <= 0)
+    {
+        questions.add("What tempo (BPM) would you like?");
+        juce::StringArray tempoOptions;
+        tempoOptions.add("Slow (60-80 BPM)");
+        tempoOptions.add("Medium (90-120 BPM)");
+        tempoOptions.add("Fast (130-160 BPM)");
+        tempoOptions.add("Very Fast (170+ BPM)");
+        possibleAnswers.add(tempoOptions);
+        questionTypes.add(0); // Multiple choice
+    }
+    
+    // Question 3: Mood (multiple choice)
+    questions.add("What's the mood of the piece?");
+    juce::StringArray moodOptions;
+    moodOptions.add("Happy");
+    moodOptions.add("Sad");
+    moodOptions.add("Energetic");
+    moodOptions.add("Relaxed");
+    moodOptions.add("Aggressive");
+    possibleAnswers.add(moodOptions);
     questionTypes.add(0); // Multiple choice
     
-    // We'll add the rest of the questions dynamically based on user responses
-    // The editor will handle this by checking the answers and adding new questions as needed
+    // Question 4: Duration (numeric with type selection)
+    questions.add("How long should the piece be?");
+    possibleAnswers.add(juce::StringArray()); // No predefined options for numeric input
+    questionTypes.add(3); // Duration type (with seconds/measures selector)
     
-    // Notify the editor with the initial questions
+    // Question 5: Complexity (numeric slider)
+    questions.add("How complex should the music be? (1-10)");
+    possibleAnswers.add(juce::StringArray()); // No predefined options for slider
+    questionTypes.add(2); // Numeric slider
+    
+    // Question 6: Additional notes (text input)
+    questions.add("Any additional notes or specific elements you'd like included?");
+    possibleAnswers.add(juce::StringArray()); // No predefined options for text input
+    questionTypes.add(1); // Text input
+    
+    // Notify the editor with the generated questions
     if (onQuestionsGenerated)
         onQuestionsGenerated(questions, possibleAnswers, questionTypes);
 }
 
-// This creates new instances of the plugin
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
-{
-    return new StreamlineAIProcessor();
-}

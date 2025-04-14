@@ -8,8 +8,17 @@
             file="Source/PluginProcessor.cpp"/>
       <FILE id="njF5Uk" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
+      <FILE id="ANaXNU" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
       <FILE id="bMwDaA" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
+      <FILE id="V4xar9" name="StreamlineProcessor.cpp" compile="1" resource="0"
+            file="Source/StreamlineProcessor.cpp"/>
+      <FILE id="gVWwW4" name="StreamlineProcessor.h" compile="0" resource="0"
+            file="Source/StreamlineProcessor.h"/>
+      <FILE id="Syr5p5" name="StreamlineEditor.cpp" compile="1" resource="0"
+            file="Source/StreamlineEditor.cpp"/>
+      <FILE id="u1yT1m" name="StreamlineEditor.h" compile="0" resource="0"
+            file="Source/StreamlineEditor.h"/>
       <FILE id="fnV0Z3" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
   </MAINGROUP>

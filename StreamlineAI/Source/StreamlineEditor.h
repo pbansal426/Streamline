@@ -3,17 +3,17 @@
 #include <JuceHeader.h>
 
 // Forward declaration
-class StreamlineAIProcessor;
+class StreamlineProcessor;
 
-class StreamlineAIEditor : public juce::AudioProcessorEditor,
-                           public juce::Button::Listener,
-                           public juce::TextEditor::Listener,
-                           public juce::ComboBox::Listener,
-                           public juce::Slider::Listener
+class StreamlineEditor : public juce::AudioProcessorEditor,
+                         public juce::Button::Listener,
+                         public juce::TextEditor::Listener,
+                         public juce::ComboBox::Listener,
+                         public juce::Slider::Listener
 {
 public:
-    StreamlineAIEditor(StreamlineAIProcessor&);
-    ~StreamlineAIEditor() override;
+    StreamlineEditor(StreamlineProcessor&);
+    ~StreamlineEditor() override;
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -32,12 +32,12 @@ public:
 
 private:
     // Reference to the processor
-    StreamlineAIProcessor& audioProcessor;
+    StreamlineProcessor& audioProcessor;
     
     // UI Components
+    juce::TextEditor promptInput;
     juce::TextButton generateButton;
-    juce::TextButton newGenerationButton;
-    juce::Label resultLabel;
+    juce::Label statusLabel;
     
     // Follow-up questions UI
     juce::Label questionLabel;
@@ -58,13 +58,17 @@ private:
     juce::Array<int> questionTypes; // 0 = multiple choice, 1 = text, 2 = numeric, 3 = duration
     juce::StringArray userAnswers;
     
+    // Project info display
+    juce::Label projectInfoLabel;
+    bool showProjectInfo = true;
+    
     // Setup methods
     void setupInitialUI();
     void setupQuestionsUI();
-    void setupCompletionUI(bool isMidi);
     void showNextQuestion();
     void submitAnswers();
-    void startQuestionnaire();
+    void updateProjectInfoDisplay();
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(StreamlineAIEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(StreamlineEditor)
 };
+
