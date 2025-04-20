@@ -10,14 +10,14 @@ StreamlineAIEditor::StreamlineAIEditor(StreamlineAIProcessor& p)
     // Set up callbacks for when generation is complete
     audioProcessor.onMidiGenerated = [this](const juce::MidiFile& midi) {
         // Show completion message
-//        currentState = Complete;
-        //setupCompletionUI(true); // true for MIDI
+        currentState = Complete;
+        setupCompletionUI(true); // true for MIDI
     };
     
     audioProcessor.onAudioGenerated = [this](const juce::AudioBuffer<float>& audio) {
         // Show completion message
-//        currentState = Complete;
-       // setupCompletionUI(false); // false for Audio
+        currentState = Complete;
+        setupCompletionUI(false); // false for Audio
     };
     
     // Set up callback for when AI generates questions
@@ -153,7 +153,7 @@ void StreamlineAIEditor::resized()
         
         // Delete the label when no longer needed
         juce::Timer::callAfterDelay(100, [this, generatingLabel]() {
-            if (generatingLabel != nullptr) {
+            if (generatingLabel != nullptr && isShowing()) {
                 removeChildComponent(generatingLabel);
                 delete generatingLabel;
             }
@@ -167,12 +167,19 @@ void StreamlineAIEditor::resized()
         // Display the generated content info
         if (resultLabel.isVisible())
         {
-            resultLabel.setBounds(area.removeFromTop(60));
-            area.removeFromTop(20);
+            resultLabel.setBounds(area.removeFromTop(40));
+            area.removeFromTop(10);
+        }
+        
+        // Response display - give it most of the remaining space
+        if (responseDisplay.isVisible())
+        {
+            responseDisplay.setBounds(area.removeFromTop(200));
+            area.removeFromTop(10);
         }
         
         // New Generation button
-        newGenerationButton.setBounds(area.removeFromTop(30).withSizeKeepingCentre(200, 30));
+        //newGenerationButton.setBounds(area.removeFromTop(30).withSizeKeepingCentre(200, 30));
     }
 }
 
@@ -444,31 +451,146 @@ void StreamlineAIEditor::setupQuestionsUI()
     resized();
 }
 
+// Update the setupCompletionUI method to ensure the response display is properly configured
 void StreamlineAIEditor::setupCompletionUI(bool isMidi)
 {
-    // Remove all existing components
-    removeAllChildren();
-    
-    // Add result label
-    addAndMakeVisible(resultLabel);
-    resultLabel.setJustificationType(juce::Justification::centred);
-    
-    if (isMidi)
-    {
-        resultLabel.setText("MIDI sequence generated successfully.\nYou can now copy it to your DAW.", juce::dontSendNotification);
+    try {
+        // Remove all existing components
+        removeAllChildren();
+        
+        // Add result label
+        addAndMakeVisible(resultLabel);
+        resultLabel.setJustificationType(juce::Justification::centred);
+        
+        if (isMidi)
+        {
+            resultLabel.setText("MIDI sequence generated successfully.\nYou can now copy it to your DAW.", juce::dontSendNotification);
+        }
+        else
+        {
+            resultLabel.setText("Audio generated successfully.\nYou can now use it in your project.", juce::dontSendNotification);
+        }
+        
+        // Add response display with improved configuration
+        addAndMakeVisible(responseDisplay);
+        responseDisplay.setMultiLine(true);
+        responseDisplay.setReadOnly(true);
+        responseDisplay.setScrollbarsShown(true);
+        responseDisplay.setCaretVisible(false);
+        responseDisplay.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), 12.0f, juce::Font::plain));
+        
+        // Create our own formatted response text directly from the collected answers
+        juce::String responseText = createFormattedResponseText();
+        responseDisplay.setText(responseText, false);
+        
+        // Log the response text for debugging
+        juce::Logger::writeToLog("Response text: " + responseText);
+        
+        // Add new generation button
+        addAndMakeVisible(newGenerationButton);
+        newGenerationButton.setButtonText("Start New Generation");
+        newGenerationButton.addListener(this);
+        
+        // Update the layout
+        resized();
     }
-    else
-    {
-        resultLabel.setText("Audio generated successfully.\nYou can now use it in your project.", juce::dontSendNotification);
+    catch (const std::exception& e) {
+        // Log any exceptions
+        juce::Logger::writeToLog("Exception in setupCompletionUI: " + juce::String(e.what()));
+    }
+}
+
+// New method to create formatted response text directly from the collected answers
+juce::String StreamlineAIEditor::createFormattedResponseText()
+{
+    if (userAnswers.size() == 0)
+        return "No responses collected yet.";
+    
+    juce::String result = "User Responses:\n\n";
+    
+    // Add the questions and answers
+    int questionIndex = 0;
+    
+    // First two questions are always the same
+    if (questionIndex < userAnswers.size()) {
+        result += "Output Format: " + userAnswers[questionIndex] + "\n\n";
+        questionIndex++;
     }
     
-    // Add new generation button
-    addAndMakeVisible(newGenerationButton);
-    newGenerationButton.setButtonText("Start New Generation");
-    newGenerationButton.addListener(this);
+    if (questionIndex < userAnswers.size()) {
+        result += "Tempo Specification: " + userAnswers[questionIndex] + "\n\n";
+        questionIndex++;
+    }
     
-    // Update the layout
-    resized();
+    // Handle the dynamic questions based on the tempo specification
+    if (userAnswers.size() > 1) {
+        if (userAnswers[1] == "Enter a specific BPM" && questionIndex < userAnswers.size()) {
+            result += "Specific BPM: " + userAnswers[questionIndex] + "\n\n";
+            questionIndex++;
+        } else if (questionIndex < userAnswers.size()) {
+            result += "Tempo Description: " + userAnswers[questionIndex] + "\n\n";
+            questionIndex++;
+        }
+    }
+    
+    // Add the remaining standard questions
+    if (questionIndex < userAnswers.size()) {
+        result += "Time Signature: " + userAnswers[questionIndex] + "\n\n";
+        questionIndex++;
+    }
+    
+    if (questionIndex < userAnswers.size()) {
+        result += "Key: " + userAnswers[questionIndex] + "\n\n";
+        questionIndex++;
+    }
+    
+    if (questionIndex < userAnswers.size()) {
+        result += "Instrument: " + userAnswers[questionIndex] + "\n\n";
+        questionIndex++;
+    }
+    
+    if (questionIndex < userAnswers.size()) {
+        result += "Genre: " + userAnswers[questionIndex] + "\n\n";
+        questionIndex++;
+    }
+    
+    if (questionIndex < userAnswers.size()) {
+        result += "Style: " + userAnswers[questionIndex] + "\n\n";
+        questionIndex++;
+    }
+    
+    if (questionIndex < userAnswers.size()) {
+        result += "Measures: " + userAnswers[questionIndex] + "\n\n";
+        questionIndex++;
+    }
+    
+    if (questionIndex < userAnswers.size()) {
+        result += "Mood: " + userAnswers[questionIndex] + "\n\n";
+        questionIndex++;
+    }
+    
+    if (questionIndex < userAnswers.size()) {
+        result += "Rhythm Complexity: " + userAnswers[questionIndex] + "/10\n\n";
+        questionIndex++;
+    }
+    
+    if (questionIndex < userAnswers.size()) {
+        result += "Melodic Complexity: " + userAnswers[questionIndex] + "/10\n\n";
+        questionIndex++;
+    }
+    
+    if (questionIndex < userAnswers.size()) {
+        result += "Additional Notes: " + userAnswers[questionIndex] + "\n\n";
+        questionIndex++;
+    }
+    
+    // Add any remaining answers
+    while (questionIndex < userAnswers.size()) {
+        result += "Answer " + juce::String(questionIndex + 1) + ": " + userAnswers[questionIndex] + "\n\n";
+        questionIndex++;
+    }
+    
+    return result;
 }
 
 void StreamlineAIEditor::showNextQuestion()
@@ -578,8 +700,18 @@ void StreamlineAIEditor::submitAnswers()
     // We'll just show a temporary message in the resized() method
     resized();
     
+    // Log all answers for debugging
+    juce::String allAnswers = "All answers: ";
+    for (auto& answer : userAnswers) {
+        allAnswers += answer + ", ";
+    }
+    juce::Logger::writeToLog(allAnswers);
+    
     // Send the answers to the processor
     audioProcessor.processFollowUpAnswers(userAnswers);
+    
+    // Now actually generate the music
+    audioProcessor.generateMusic();
 }
 
 void StreamlineAIEditor::startQuestionnaire()

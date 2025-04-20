@@ -34,6 +34,7 @@ public:
     // AI generation methods
     void generateMusicFromPrompt(const juce::String& prompt);
     void processFollowUpAnswers(const juce::StringArray& answers);
+    void generateMusic(); // Add this new method
     
     // Project info methods
     double getProjectTempo() const;
@@ -43,6 +44,9 @@ public:
     int getProjectTimeSigDenominator() const;
     void setProjectTimeSigDenominator(int denom);
     juce::StringArray getProjectTrackInfo() const;
+
+    // Method to get the responses as a formatted string
+    juce::String getFormattedResponses() const;
     
     // Callback for when generation is complete
     std::function<void(const juce::MidiFile&)> onMidiGenerated;
@@ -75,6 +79,12 @@ private:
     
     // Output format
     bool outputAsMidi = true; // Default to MIDI output
+
+    // Dictionary to store user responses
+    std::unique_ptr<juce::DynamicObject> userResponsesDict;
+    
+    // Method to get the responses as a formatted string
+    juce::String getResponsesAsString() const;
     
     // Mock function to generate AI questions (will be replaced with actual AI)
     void generateAIQuestions(const juce::String& initialPrompt);

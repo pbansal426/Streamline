@@ -65,6 +65,12 @@ private:
     void showNextQuestion();
     void submitAnswers();
     void startQuestionnaire();
+
+    // Response display
+    juce::TextEditor responseDisplay;
+    
+    // New method to create formatted response text directly from the collected answers
+    juce::String createFormattedResponseText();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(StreamlineAIEditor)
 };
