@@ -1,4 +1,1 @@
-# requirements.txt
-numpy
-matplotlib
-mido  # For MIDI file handling
+magenta

@@ -24,7 +24,4 @@ Rhythm Complexity: 50/10
 
 Melodic Complexity: 50/10
 
-Additional Notes: 
-
-
-Python Script Ran
+Additional Notes: Make it like Kanye
