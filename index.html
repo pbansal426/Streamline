@@ -1,260 +1,426 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Streamline: Development Timeline</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --bg: #0d0d0d;
-      --text: #ffffff;
-      --accent: #6cf;
-      --card-bg: #1a1a1a;
-      --border: #333;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; scroll-behavior:smooth; }
-    body {
-      font-family:'Outfit',sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      line-height:1.6;
-      padding:2rem;
-    }
-    h1 {
-      font-size:2.8rem;
-      color:var(--accent);
-      text-align:center;
-      margin-bottom:2.5rem;
-    }
-    .timeline {
-      display:flex;
-      flex-direction:column;
-      gap:3.5rem;
-      max-width:900px;
-      margin:0 auto;
-    }
-    .card {
-      background:var(--card-bg);
-      border:1px solid var(--border);
-      border-left:6px solid var(--accent);
-      border-radius:10px;
-      padding:1.75rem;
-      box-shadow:0 4px 15px rgba(0,0,0,0.4);
-      opacity:0;
-      transform:translateY(25px);
-      animation:fadeInUp 0.8s ease forwards;
-    }
-    .card.visible { opacity:1; transform:translateY(0); }
-    .card h2 {
-      font-size:1.7rem;
-      color:var(--accent);
-      margin-bottom:0.5rem;
-    }
-    .timeline-date {
-      font-size:0.9rem;
-      color:#aaa;
-      margin-bottom:1.2rem;
-    }
-    .card p { margin-bottom:1rem; }
-    .card ul, .card ol {
-      margin:0.5rem 0 1rem 1.25rem;
-    }
-    .media {
-      display:flex;
-      flex-wrap:wrap;
-      gap:1rem;
-      margin-top:1rem;
-    }
-    .media img, .media video, .media iframe {
-      max-width:100%;
-      border-radius:6px;
-      border:1px solid var(--border);
-    }
-    footer {
-      text-align:center;
-      margin-top:4rem;
-      color:#666;
-      font-size:0.9rem;
-    }
-    a { color:var(--accent); text-decoration:none; }
-    a:hover { text-decoration:underline; }
-    @keyframes fadeInUp {
-      to { opacity:1; transform:translateY(0); }
-    }
-  </style>
-</head>
-<body>
-  <h1>Streamline Development Timeline</h1>
-  <div class="timeline">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Streamline: Development Timeline</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0d0d0d;
+        --text: #ffffff;
+        --accent: #6cf;
+        --card-bg: #1a1a1a;
+        --border: #333;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Outfit", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        padding: 2rem;
+      }
+      h1 {
+        font-size: 2.8rem;
+        color: var(--accent);
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+      .timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 3.5rem;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-left: 6px solid var(--accent);
+        border-radius: 10px;
+        padding: 1.75rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        opacity: 0;
+        transform: translateY(25px);
+        animation: fadeInUp 0.8s ease forwards;
+      }
+      .card.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .card h2 {
+        font-size: 1.7rem;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+      }
+      .timeline-date {
+        font-size: 0.9rem;
+        color: #aaa;
+        margin-bottom: 1.2rem;
+      }
+      .card p {
+        margin-bottom: 1rem;
+      }
+      .card ul,
+      .card ol {
+        margin: 0.5rem 0 1rem 1.25rem;
+      }
+      .media {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .media img,
+      .media video,
+      .media iframe {
+        max-width: 100%;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+      }
+      
+      footer {
+        text-align: center;
+        margin-top: 4rem;
+        color: #666;
+        font-size: 0.9rem;
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Streamline Development Timeline</h1>
+    <div class="timeline">
+      <div class="card">
+        <h2>Phase 1 — Core Setup</h2>
+        <p class="timeline-date">Completed Feb 4, 2025</p>
+        <p>Laid the foundation for a desktop DAW app with AI assistance:</p>
+        <ol>
+          <li>
+            Created project root with <code>pipenv</code> virtual environment
+            for the backend.
+          </li>
+          <li>
+            Initialized an Electron + npm frontend folder, set up
+            <code>main.js</code> and HTML shell.
+          </li>
+          <li>
+            Wrote <code>app.py</code> to serve basic “Hello, World” JSON
+            endpoints via Flask.
+          </li>
+          <li>
+            Verified communication: Electron UI → HTTP call → Flask response.
+          </li>
+        </ol>
+        <p>
+          Result: A working skeleton where front‑ and back‑ends talk over HTTP.
+        </p>
+        <div class="media">
+          <img
+            src="assets/Phase1Files.png"
+            alt="Directory structure after Phase 1"
+          />
+        </div>
+      </div>
 
-    <div class="card">
-      <h2>Phase 1 — Core Setup</h2>
-      <p class="timeline-date">Completed Feb 4, 2025</p>
-      <p>Laid the foundation for a desktop DAW app with AI assistance:</p>
-      <ol>
-        <li>Created project root with <code>pipenv</code> virtual environment for the backend.</li>
-        <li>Initialized an Electron + npm frontend folder, set up <code>main.js</code> and HTML shell.</li>
-        <li>Wrote <code>app.py</code> to serve basic “Hello, World” JSON endpoints via Flask.</li>
-        <li>Verified communication: Electron UI → HTTP call → Flask response.</li>
-      </ol>
-      <p>Result: A working skeleton where front‑ and back‑ends talk over HTTP.</p>
-      <div class="media">
-        <img src="assets/Phase1Files.png" alt="Directory structure after Phase 1">
+      <div class="card">
+        <h2>Phase 2 — AI & Vite Frontend</h2>
+        <p class="timeline-date">Completed Feb 10, 2025</p>
+        <p>Enhanced the backend and spun up a modern React UI:</p>
+        <ul>
+          <li>
+            Switched backend from Pipenv → <code>venv</code>, added
+            <code>requirements.txt</code>.
+          </li>
+          <li>
+            Installed FastAPI alongside Flask; replaced Flask run command with
+            <code>uvicorn</code> for ASGI.
+          </li>
+          <li>
+            Imported Ollama & Deepseek models in Python; wrote
+            <code>ai.py</code> to expose an <code>/generate</code> route.
+          </li>
+          <li>
+            Generated a Vite + React app; built a simple chat interface to send
+            prompts and display streaming responses.
+          </li>
+          <li>
+            Tested full flow: UI → FastAPI → AI model → UI, with sample prompts
+            and debug logging.
+          </li>
+        </ul>
+        <div class="media">
+          <img src="assets/python.png" alt="Backend Python AI integration" />
+          <img src="assets/frontend.png" alt="Vite React frontend" />
+          <img src="assets/before.png" alt="UI before AI response" />
+          <img src="assets/after.png" alt="UI after AI response" />
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Phase 3 — DawDreamer Integration</h2>
+        <p class="timeline-date">Completed Feb 18, 2025</p>
+        <p>Integrated an open‑source AI plugin to speed up development:</p>
+        <ol>
+          <li>
+            Cloned
+            <a href="https://github.com/DBraun/DawDreamer.git" target="_blank"
+              >DawDreamer</a
+            >
+            into the project.
+          </li>
+          <li>
+            Imported its .jucer file in Projucer and resolved missing module
+            references.
+          </li>
+          <li>
+            Fixed initial Xcode build errors by aligning plugin settings with
+            JUCE recommendations.
+          </li>
+        </ol>
+        <div class="media">
+          <img src="assets/dawdreamer.png" alt="DawDreamer loaded in Xcode" />
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/kT7yrS-wLmk"
+            title="DawDreamer progress demo"
+            frameborder="0"
+            allowfullscreen
+          >
+          </iframe>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Phase 4 — Build Troubleshooting</h2>
+        <p class="timeline-date">Ongoing</p>
+        <p>Focused on making the plugin reliably build and run:</p>
+        <ul>
+          <li>Tested with Xcode 15 and identified compatibility issues.</li>
+          <li>
+            Rolled back to Xcode 14, updated project’s C++ standard and header
+            search paths.
+          </li>
+          <li>Consulted JUCE forums and Apple docs to fix linker errors.</li>
+          <li>
+            Documented all fixes in a <code>BUILD_NOTES.md</code> for future
+            reference.
+          </li>
+        </ul>
+        <div class="media">
+          <img
+            src="assets/xcode.png"
+            alt="Screenshot of Xcode errors and fixes"
+          />
+        </div>
+      </div>
+      <div class="card">
+        <h2>Phase 5 — JUCE Migration</h2>
+        <p class="timeline-date">Completed Feb 24, 2025</p>
+        <p>Shifted from web‑style app to a native audio plugin framework:</p>
+        <ol>
+          <li>
+            Installed JUCE and launched Projucer to create a new C++ audio
+            plugin project.
+          </li>
+          <li>Configured project settings for VST3 and AU formats.</li>
+          <li>
+            Copied over AI API code as a background thread in the plugin
+            processor.
+          </li>
+          <li>
+            Compiled minimal UI components to verify plugin loading in a DAW.
+          </li>
+        </ol>
+        <p>
+          Outcome: A JUCE-based plugin scaffolding that can host AI integration.
+        </p>
+        <div class="media">
+          <img src="assets/projucer.png" alt="JUCE Projucer project setup" />
+        </div>
+        <p>
+          Learn more at
+          <a href="https://juce.com/" target="_blank">juce.com</a>.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Phase 7 — UI & Music LM</h2>
+        <p class="timeline-date">Ongoing</p>
+        <p>Finalizing user interface and integrating cloud AI:</p>
+        <ul>
+          <li>Designed the final plugin UI in Logic Pro’s plugin manager.</li>
+          <li>
+            Integrated Google Music LM API calls inside a Python helper script.
+          </li>
+          <li>
+            Implemented asynchronous communication between JUCE GUI and Python
+            backend.
+          </li>
+          <li>
+            Tested end‑to‑end generation of short audio clips from text prompts.
+          </li>
+        </ul>
+        <div class="media">
+          <img src="assets/ui.png" alt="Final Logic Pro plugin UI preview" />
+        </div>
+      </div>
+      <div class="card">
+        <h2>Current — Magenta Research</h2>
+        <p class="timeline-date">Ongoing</p>
+        <p>Investigating advanced AI models for music generation:</p>
+        <ol>
+          <li>
+            Reviewed Google Magenta’s TensorFlow library and sample notebooks.
+          </li>
+          <li>
+            Writing Python script to load Magenta’s MelodyRNN and DrumRNN
+            checkpoints.
+          </li>
+          <li>Comparing resources: HuggingFace vs Google Magenta</li>
+          <li>
+            Make sure JUCE plug-in asks for the input that the AI models requre.
+          </li>
+        </ol>
+        <div class="media">
+          <img
+            src="assets/plugins.png"
+            alt="JUCE plugin with Magenta endpoint"
+          />
+        </div>
+      </div>
+      <div class="card">
+        <h2>MVP — AI Audio Generator Plugin</h2>
+        <p class="timeline-date">April 2025</p>
+        <p>
+          A plugin that uses free AI tools (HuggingFace, Magenta, or OpenAI) to
+          generate musical content inside a DAW.
+        </p>
+        <p>
+          <strong>Goal:</strong> Convert a user text prompt (e.g., “Create a
+          simple piano melody”) into either a <strong>MIDI</strong> sequence or
+          a <strong>complete audio clip</strong>.
+        </p>
+        <p><strong>Workflow:</strong></p>
+        <ol>
+          <li><strong>User selects output type:</strong> MIDI or Audio.</li>
+          <li>
+            <strong>Interactive Questionnaire:</strong> The plugin guides the
+            user through 10+ questions:
+            <ul>
+              <li>Tempo, measures, key, and time signature.</li>
+              <li>Instrument choice, genre, mood, and style.</li>
+              <li>Rhythm complexity and melodic range.</li>
+            </ul>
+            <div class="media"">
+              <img
+                src="assets/MVP/q1.png"
+                alt="Plugin text‑prompt input dialog"
+              /></div><div class="media"><img
+                src="assets/MVP/q2.png"
+                alt="Plugin text‑prompt input dialog"
+              />
+            </div>
+            <br>
+            
+          </li>
+          <li>
+            <strong>Data Transfer:</strong> Collected input is placed on a text
+            file.
+            <div class="media"><img src="assets/MVP/text.png"></div>
+          </li>
+          <li>
+            <strong>Python Processing:</strong> The backend (a Python Script)
+            uses a Magenta AI model to produce MIDI or Audio by accessing,
+            formatting, and sending the text in the text file.
+            <div class="media"><img src="assets/MVP/import.png"></div>
+            <div class="media"><img src="assets/MVP/pythonscipt.png"></div>
+            
+          </li>
+          <li>
+            <strong>Output:</strong> The plugin generates either:
+            <ul>
+              <li>
+                <strong>MIDI:</strong> A MIDI file with the generated melody.
+              </li>
+              <li>
+                <strong>Audio:</strong> A .wav file with the generated melody.
+              </li>
+            </ul>
+            The audio files are placed in a folder easily accessible from the
+            DAW.
+            <!-- <div class="">
+            </div>media</li> -->
+            <div class="media"><img src="assets/midi.png" alt="Generated MIDI melody displayed in piano roll"></div>
+            
+
+          <li>
+            <strong>Final Step:</strong>
+            <ul>
+              <li>
+                If MIDI: User imports the .mid file into their DAW’s piano roll.
+              </li>
+              <li>
+                If Audio: Plugin places the generated .wav clip directly on the
+                track.
+              </li>
+            </ul>
+          </li>
+        </ol>
+        <div class="media"><video controls>
+          <!-- <source src="assets/mvp.mov" type="video/mp4">
+          Your browser does not support the video tag. -->
+          Video Demo Coming Soon
+        </video></div>
+        Video Demo Coming Soon
+      
+        
+    
       </div>
     </div>
 
-    <div class="card">
-      <h2>Phase 2 — AI & Vite Frontend</h2>
-      <p class="timeline-date">Completed Feb 10, 2025</p>
-      <p>Enhanced the backend and spun up a modern React UI:</p>
-      <ul>
-        <li>Switched backend from Pipenv → <code>venv</code>, added <code>requirements.txt</code>.</li>
-        <li>Installed FastAPI alongside Flask; replaced Flask run command with <code>uvicorn</code> for ASGI.</li>
-        <li>Imported Ollama & Deepseek models in Python; wrote <code>ai.py</code> to expose an <code>/generate</code> route.</li>
-        <li>Generated a Vite + React app; built a simple chat interface to send prompts and display streaming responses.</li>
-        <li>Tested full flow: UI → FastAPI → AI model → UI, with sample prompts and debug logging.</li>
-      </ul>
-      <div class="media">
-        <img src="assets/python.png" alt="Backend Python AI integration">
-        <img src="assets/frontend.png" alt="Vite React frontend">
-        <img src="assets/before.png" alt="UI before AI response">
-        <img src="assets/after.png" alt="UI after AI response">
-      </div>
-    </div>
+    <footer>
+      <p>
+        GitHub:
+        <a href="https://github.com/pbansal426/Streamline" target="_blank"
+          >pbansal426/Streamline</a
+        >
+      </p>
+      <p>Go to <a href="https://pbansal426.github.io">my Portfolio</a></p>
+    </footer>
 
-    <div class="card">
-      <h2>Phase 3 — JUCE Migration</h2>
-      <p class="timeline-date">Completed Feb 18, 2025</p>
-      <p>Shifted from web‑style app to a native audio plugin framework:</p>
-      <ol>
-        <li>Installed JUCE and launched Projucer to create a new C++ audio plugin project.</li>
-        <li>Configured project settings for VST3 and AU formats.</li>
-        <li>Copied over AI API code as a background thread in the plugin processor.</li>
-        <li>Compiled minimal UI components to verify plugin loading in a DAW.</li>
-      </ol>
-      <p>Outcome: A JUCE-based plugin scaffolding that can host AI integration.</p>
-      <div class="media">
-        <img src="assets/projucer.png" alt="JUCE Projucer project setup">
-      </div>
-      <p>Learn more at <a href="https://juce.com/" target="_blank">juce.com</a>.</p>
-    </div>
-
-    <div class="card">
-      <h2>Phase 4 — DawDreamer Integration</h2>
-      <p class="timeline-date">Completed Feb 24, 2025</p>
-      <p>Integrated an open‑source AI plugin to speed up development:</p>
-      <ol>
-        <li>Cloned <a href="https://github.com/DBraun/DawDreamer.git" target="_blank">DawDreamer</a> into the project.</li>
-        <li>Imported its .jucer file in Projucer and resolved missing module references.</li>
-        <li>Fixed initial Xcode build errors by aligning plugin settings with JUCE recommendations.</li>
-      </ol>
-      <div class="media">
-        <img src="assets/dawdreamer.png" alt="DawDreamer loaded in Xcode">
-        <iframe width="560" height="315"
-          src="https://www.youtube.com/embed/kT7yrS-wLmk"
-          title="DawDreamer progress demo"
-          frameborder="0"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Phase 5 — Build Troubleshooting</h2>
-      <p class="timeline-date">Ongoing</p>
-      <p>Focused on making the plugin reliably build and run:</p>
-      <ul>
-        <li>Tested with Xcode 15 and identified compatibility issues.</li>
-        <li>Rolled back to Xcode 14, updated project’s C++ standard and header search paths.</li>
-        <li>Consulted JUCE forums and Apple docs to fix linker errors.</li>
-        <li>Documented all fixes in a <code>BUILD_NOTES.md</code> for future reference.</li>
-      </ul>
-      <div class="media">
-        <img src="assets/xcode.png" alt="Screenshot of Xcode errors and fixes">
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Phase 6 — Magenta Research</h2>
-      <p class="timeline-date">Ongoing</p>
-      <p>Investigating advanced AI models for music generation:</p>
-      <ol>
-        <li>Reviewed Google Magenta’s TensorFlow library and sample notebooks.</li>
-        <li>Wrote a Python script to load Magenta’s MelodyRNN and DrumRNN checkpoints.</li>
-        <li>Exposed a new FastAPI endpoint <code>/magenta-generate</code> for backend testing.</li>
-        <li>Built minimal JUCE UI controls to send Magenta prompts from the plugin.</li>
-      </ol>
-      <div class="media">
-        <img src="assets/plugins.png" alt="JUCE plugin with Magenta endpoint">
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Phase 7 — UI & Music LM</h2>
-      <p class="timeline-date">Ongoing</p>
-      <p>Finalizing user interface and integrating cloud AI:</p>
-      <ul>
-        <li>Designed the final plugin UI in Logic Pro’s plugin manager.</li>
-        <li>Integrated Google Music LM API calls inside a Python helper script.</li>
-        <li>Implemented asynchronous communication between JUCE GUI and Python backend.</li>
-        <li>Tested end‑to‑end generation of short audio clips from text prompts.</li>
-      </ul>
-      <div class="media">
-        <img src="assets/ui.png" alt="Final Logic Pro plugin UI preview">
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>MVP — AI Audio Generator Plugin</h2>
-      <p class="timeline-date">April 2025</p>
-      <p>A plugin that uses free AI tools (HuggingFace, Magenta, or OpenAI) to generate musical content inside a DAW.</p>
-      <p><strong>Goal:</strong> Convert a user text prompt (e.g., “Create a simple piano melody”) into either a <strong>MIDI</strong> sequence or a <strong>complete audio clip</strong>.</p>
-      <p><strong>Workflow:</strong></p>
-      <ol>
-        <li><strong>User selects output type:</strong> MIDI or Audio.</li>
-        <li><strong>Interactive Questionnaire:</strong> The plugin guides the user through 10+ questions:
-          <ul>
-            <li>Tempo, measures, key, and time signature.</li>
-            <li>Instrument choice, genre, mood, and style.</li>
-            <li>Rhythm complexity and melodic range.</li>
-          </ul>
-        </li>
-        <li><strong>Data Transfer:</strong> Collected input is sent to a Python backend via API.</li>
-        <li><strong>AI Generation:</strong> The backend uses an AI music generator to produce MIDI or audio.</li>
-        <li><strong>Output:</strong>
-          <ul>
-            <li>If MIDI: User imports the .mid file into their DAW’s piano roll.</li>
-            <li>If Audio: Plugin places the generated .wav clip directly on the track.</li>
-          </ul>
-        </li>
-      </ol>
-      <p><strong>Visuals:</strong></p>
-      <div class="media">
-        <img src="assets/input.png" alt="Plugin text‑prompt input dialog">
-        <img src="assets/midi.png" alt="Generated MIDI melody displayed in piano roll">
-        <video controls>
-          <source src="assets/mvp.mov" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-    </div>
-
-  </div>
-
-  <footer>
-    <p>GitHub: <a href="https://github.com/pbansal426/Streamline" target="_blank">pbansal426/Streamline</a></p>
-    <p>Go to <a href="https://pbansal426.github.io">my Portfolio</a></p>
-  </footer>
-
-  <script>
-    const cards = document.querySelectorAll('.card');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('visible');
-      });
-    }, { threshold: 0.15 });
-    cards.forEach(c => observer.observe(c));
-  </script>
-</body>
+    <script>
+      const cards = document.querySelectorAll(".card");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.15 }
+      );
+      cards.forEach((c) => observer.observe(c));
+    </script>
+  </body>
 </html>
