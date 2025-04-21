@@ -1,0 +1,30 @@
+User Responses:
+
+Output Format: MIDI
+
+Tempo Specification: Enter a specific BPM
+
+Specific BPM: 120
+                    
+Time Signature: 4/4 (Common time)
+
+Key: C Major / A Minor
+
+Instrument: Piano
+
+Genre: Rock
+
+Style: Standard/Traditional
+
+Measures: 16
+
+Mood: Happy
+
+Rhythm Complexity: 50/10
+
+Melodic Complexity: 50/10
+
+Additional Notes: 
+
+
+Python Script Ran

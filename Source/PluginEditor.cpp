@@ -1,6 +1,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-
+#include <iostream>
+#include <unistd.h>
 StreamlineAIEditor::StreamlineAIEditor(StreamlineAIProcessor& p)
     : AudioProcessorEditor(&p), audioProcessor(p)
 {
@@ -470,29 +471,72 @@ void StreamlineAIEditor::setupCompletionUI(bool isMidi)
         {
             resultLabel.setText("Audio generated successfully.\nYou can now use it in your project.", juce::dontSendNotification);
         }
-        
-        // Add response display with improved configuration
         addAndMakeVisible(responseDisplay);
         responseDisplay.setMultiLine(true);
         responseDisplay.setReadOnly(true);
         responseDisplay.setScrollbarsShown(true);
         responseDisplay.setCaretVisible(false);
         responseDisplay.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), 12.0f, juce::Font::plain));
-        
-        // Create our own formatted response text directly from the collected answers
+
+        // --- begin snippet ---
+
         juce::String responseText = createFormattedResponseText();
+
+            // 2) Locate your project root (where process.py lives)
+            //    For simplicity, hard‑code it here during development:
+            static const juce::File projectRoot ("/Users/prathambansal/Projects/Streamline");
+
+            // 3) Write responseText into text.txt beside process.py
+            juce::File textFile = projectRoot.getChildFile("text.txt");
+            juce::Logger::writeToLog("[DEBUG] Writing to: " + textFile.getFullPathName());
+            if (! textFile.replaceWithText(responseText))
+            {
+                juce::Logger::writeToLog("[ERROR] Failed to write text.txt");
+                return;
+            }
+            juce::Logger::writeToLog("[DEBUG] ✓ Wrote text.txt (" + juce::String(textFile.getSize()) + " bytes)");
+
+            // 4) Build absolute path to your Python script
+            juce::File scriptFile = projectRoot.getChildFile("process.py");
+            juce::String cmd = "/opt/homebrew/bin/python3 \"" + scriptFile.getFullPathName() + "\"";
+            // adjust python path if needed
+
+            juce::Logger::writeToLog("[DEBUG] Running: " + cmd);
+
+            // 5) Launch the Python script and capture its output
+            juce::ChildProcess pythonProc;
+            if (pythonProc.start(cmd))
+            {
+                juce::String output;
+                while (pythonProc.isRunning())
+                {
+                    output += pythonProc.readAllProcessOutput();
+                    juce::Thread::sleep(10);
+                }
+                // read any remaining output
+                output += pythonProc.readAllProcessOutput();
+                juce::Logger::writeToLog("[Python stdout]\n" + output);
+            }
+            else
+            {
+                juce::Logger::writeToLog("[ERROR] Failed to start Python script");
+            }
+
+
         responseDisplay.setText(responseText, false);
         
-        // Log the response text for debugging
         juce::Logger::writeToLog("Response text: " + responseText);
-        
-        // Add new generation button
+      
         addAndMakeVisible(newGenerationButton);
         newGenerationButton.setButtonText("Start New Generation");
         newGenerationButton.addListener(this);
         
-        // Update the layout
         resized();
+//        sleep(4);
+//        currentState = Initial;
+//        setupInitialUI();
+//        startQuestionnaire();
+        // Update the layout
     }
     catch (const std::exception& e) {
         // Log any exceptions
