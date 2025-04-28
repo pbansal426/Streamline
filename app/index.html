@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Streamline!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        color: #eee;
+        overflow-x: hidden;
+      }
+      .logo {
+        max-width: 80%;
+        height: auto;
+      }
+      .icon-link {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+      }
+      .icon-link:hover {
+        color: #ddd;
+      }
+      .welcome-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        text-align: center;
+        color: #fff;
+        margin-left: 20px;
+      }
+      .section-title {
+        color: #fff;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+      .section-content {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        text-align: left;
+      }
+      .bi {
+        font-size: 1.5rem;
+      }
+      .main-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        overflow: auto;
+      }
+      .sections-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+        width: 100%;
+        max-width: 1200px;
+        margin-top: 2rem;
+      }
+      .section {
+        flex: 1;
+        min-width: 300px;
+        text-align: center;
+      }
+      #instructions-section {
+        flex: 0 0 100%;
+        max-width: 1200px;
+        margin-top: 2rem;
+        text-align: left;
+        overflow-y: auto;
+        max-height: 500px;
+      }
+      #instructions-section ul {
+        list-style-position: inside;
+        padding-left: 0;
+        margin-left: 0;
+      }
+      #instructions-section li {
+        margin-bottom: 1rem;
+      }
+      #instructions-section h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #fff;
+      }
+      #instructions-section code {
+        background-color: #2d3748;
+        color: #f7fafc;
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.375rem;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.9rem;
+        margin: 0 0.25rem;
+      }
+      .footer {
+        margin-top: 2rem;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #aaa;
+      }
+      .footer a {
+        color: #ffdb58;
+        text-decoration: none;
+      }
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body class="mx-3 bg-dark d-flex flex-column align-items-center justify-content-center vh-100">
+    <div class="position-absolute top-0 start-0 m-4 d-flex flex-column align-items-center">
+      <img src="assets/logo.png" alt="Streamline Logo" class="logo mb-4" />
+    </div>
+    <main class="main-content">
+      <h1 class="welcome-title text-white text-shadow">Welcome to Streamline!</h1>
+      <div class="sections-container mx-lg-5">
+        <section id="instructions-section" class="mx-5 section">
+          <h2 class="section-title">Instructions (macOS)</h2>
+          <p class="section-content">
+            <ul style="list-style-position: inside;">
+              <li>
+                <h3>VST Plugin Installation</h3>
+                <p>Move the VST plugin file (<code>Streamline/Builds/MacOSX/build/Debug/StreamlineAI.vst3</code>) into the following directory:</p>
+                <p><code>/Library/Audio/Plug-Ins/VST3</code></p>
+              </li>
+              <li>
+                <h3>DAW Setup</h3>
+                <p>Open your Digital Audio Workstation (DAW) and create a new folder to store MIDI output files.</p>
+              </li>
+              <li>
+                <h3>VST Plugin Interaction</h3>
+                <p>Open the StreamlineAI VST3 plugin in your DAW.  Answer all questions prompted in the plug-in window.</p>
+              </li>
+              <li>
+                <h3>Terminal Setup</h3>
+                <p>Open a terminal in the root project directory, and run the following commands (ensure Python 3.7 or higher is installed):</p>
+                <ul style="list-style-position: inside;">
+                  <li><code>cd text2midi</code></li>
+                  <li><code>pip3 install -r requirements-mac.txt</code></li>
+                </ul>
+              </li>
+              <li>
+                <h3>Output Directory Configuration</h3>
+                <p>Open the <code>process.py</code> file.  Locate the line containing <code>output_dir = ''</code>, and replace the empty string with the path to the folder you created in your DAW for MIDI output files.</p>
+              </li>
+              <li>
+                <h3>Running the Processing Script</h3>
+                <p>In the terminal, execute the following commands:</p>
+                <ul style="list-style-position: inside;">
+                  <li><code>cd ..</code></li>
+                  <li><code>python3 process.py</code></li>
+                </ul>
+                <p>Wait for the progress bar to complete, then drag the newly generated MIDI file from the folder in the DAW.</p>
+                              <p>Enjoy.</p>
+
+              </li>
+
+            </ul>
+          </p>
+        </section>
+      </div>
+      <footer class="footer">
+        <p>
+          View GitHub:
+          <a href="https://github.com/pbansal426/Streamline" target="_blank" rel="noopener noreferrer">
+            pbansal426/Streamline
+          </a>
+          |
+          View Development Timeline:
+          <a href="https://pbansal426.github.io/Streamline" target="_blank" rel="noopener noreferrer">
+            pbansal426.github.io/Streamline
+          </a>
+        </p>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  </body>
+</html>
