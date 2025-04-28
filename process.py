@@ -1,95 +1,81 @@
+import pickle
+import torch
+import torch.nn as nn
+from transformers import T5Tokenizer
+from text2midi.model.transformer_model import Transformer
+from huggingface_hub import hf_hub_download
 import os
-from magenta.models.melody_rnn import melody_rnn_sequence_generator
-from magenta.models.shared import sequence_generator_bundle
-from magenta.music import midi_io
-from magenta.protobuf import generator_pb2, music_pb2
-import pretty_midi
-from pathlib import Path
+import re
 
-def parse_text_file(file_path):
-    """Parse the specification file into a dictionary"""
-    params = {}
-    with open(file_path, 'r') as f:
-        for line in f:
-            if ':' in line:
-                key, value = line.split(':', 1)
-                params[key.strip()] = value.strip()
-    return params
+repo_id = "amaai-lab/text2midi"
+model_path = hf_hub_download(repo_id=repo_id, filename="pytorch_model.bin")
+tokenizer_path = hf_hub_download(repo_id=repo_id, filename="vocab_remi.pkl")
 
-def create_primer_sequence(params):
-    """Create a Magenta NoteSequence from parameters"""
-    sequence = music_pb2.NoteSequence()
-    
-    # Tempo (convert BPM to QPM)
-    sequence.tempos.add(qpm=float(params['Specific BPM']))
-    
-    # Time Signature
-    numerator, denominator = params['Time Signature'].split('/')
-    sequence.time_signatures.add(
-        numerator=int(numerator),
-        denominator=int(denominator),
-        time=0.0
-    )
-    
-    # Key Signature
-    sequence.key_signatures.add(
-        key=pretty_midi.key_name_to_key_number(params['Key'].split('/')[0].strip()),
-        time=0.0
-    )
-    
-    # Instrument (MIDI program mapping)
-    instrument_map = {
-        'piano': 0,
-        'guitar': 24,
-        'drums': 118,
-        # Add more instruments as needed
-    }
-    sequence.instrument_infos.add(
-        name=params['Instrument'].lower(),
-        program=instrument_map.get(params['Instrument'].lower(), 0)
-    )
-    
-    return sequence
+if torch.cuda.is_available():
+    device = 'cuda'
+elif torch.backends.mps.is_available():
+    device = 'mps'
+else:
+    device = 'cpu'
 
-def generate_midi(params, output_dir="magenta_output"):
-    # Initialize model
-    bundle = sequence_generator_bundle.read_bundle_file(
-        'https://storage.googleapis.com/magentadata/models/melody_rnn/basic_rnn.mag'
-    )
-    generator = melody_rnn_sequence_generator.MelodyRnnSequenceGenerator(
-        bundle=bundle,
-        steps_per_quarter=4  # Standard for 16th note resolution
-    )
+print(f"Using device: {device}")
 
-    # Create primer sequence
-    primer_sequence = create_primer_sequence(params)
-    
-    # Calculate generation length (measures to steps)
-    measures = int(params['Measures'])
-    steps_per_measure = 4 * primer_sequence.time_signatures[0].numerator
-    total_steps = measures * steps_per_measure
+with open(tokenizer_path, "rb") as f:
+    r_tokenizer = pickle.load(f)
 
-    # Configure generation parameters
-    generator_options = generator_pb2.GeneratorOptions()
-    generator_options.args['temperature'].float_value = float(
-        (int(params['Rhythm Complexity']) + int(params['Melodic Complexity'])) / 20)
-    generator_options.generate_sections.add(
-        start_time=0,
-        end_time=total_steps / generator.steps_per_second
-    )
+vocab_size = len(r_tokenizer)
+print("Vocab size: ", vocab_size)
 
-    # Generate sequence
-    generated_sequence = generator.generate(primer_sequence, generator_options)
+model = Transformer(vocab_size, 768, 8, 2048, 18, 1024, False, 8, device=device)
+model.load_state_dict(torch.load(model_path, map_location=device))
+model.eval()
+tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-base")
 
-    # Save MIDI
-    output_dir = Path(output_dir)
-    output_dir.mkdir(exist_ok=True)
-    output_path = output_dir / f"{params['Genre']}_{params['Mood']}.mid"
-    
-    midi_io.sequence_proto_to_midi_file(generated_sequence, str(output_path))
-    return output_path
+print('Model loaded.')
 
-if __name__ == "__main__":
-    params = parse_text_file("text.txt")
-    result_path = generate_midi(params)
-    print(f"Generated MIDI file: {result_path}")
+text_file_path = "text.txt"
+try:
+    with open(text_file_path, "r") as f:
+        lines = f.readlines()
+
+    genre = next((line.split(":", 1)[1].strip() for line in lines if "Genre:" in line), "Unknown Genre")
+    instrument = next((line.split(":", 1)[1].strip() for line in lines if "Instrument:" in line), "Unknown Instrument")
+    tempo = next((line.split(":", 1)[1].strip() for line in lines if "Specific BPM:" in line), "Unknown Tempo")
+    mood = next((line.split(":", 1)[1].strip() for line in lines if "Mood:" in line), "Unknown Mood")
+
+    src = f"Generate a {genre} piece for {instrument} at {tempo} BPM with a {mood} mood."
+    print(f'Generating for prompt: "{src}"')
+
+    if genre != "Unknown Genre" and mood != "Unknown Mood":
+        filename = f"{genre.lower()}_{mood.lower()}"
+    elif genre != "Unknown Genre":
+        filename = genre.lower()
+    elif mood != "Unknown Mood":
+        filename = mood.lower()
+    else:
+        filename = "output"
+
+    filename = re.sub(r'[^a-z0-9_]', '', filename)
+    filename = filename[:20]
+
+    #  ** Manually set the output directory **
+    output_dir = '/Users/prathambansal/Music/Logic/StreamlineMIDI/'
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    output_midi_path = os.path.join(output_dir, filename + ".mid")
+
+except FileNotFoundError:
+    print(f"Error: {text_file_path} not found in the current directory.")
+    exit()
+
+inputs = tokenizer(src, return_tensors='pt', padding=True, truncation=True)
+input_ids = nn.utils.rnn.pad_sequence(inputs.input_ids, batch_first=True, padding_value=0).to(device)
+attention_mask = nn.utils.rnn.pad_sequence(inputs.attention_mask, batch_first=True, padding_value=0).to(device)
+
+output = model.generate(input_ids, attention_mask, max_len=50, temperature=1)
+output_list = output[0].tolist()
+generated_midi = r_tokenizer.decode(output_list)
+generated_midi.dump_midi(output_midi_path)
+print(f"Saved to {output_midi_path}")

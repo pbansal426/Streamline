@@ -1,52 +1,5 @@
-# Node modules (frontend)
-node_modules/
-
-# Build output
-/dist
-/build
-/.vite
-
-# Frontend dependencies (lock files)
-/package-lock.json
-/yarn.lock
-/.pnpm-store
-
-# Python bytecode
-__pycache__/
-*.py[cod]
-*.pyo
-
-# Virtual environment (backend)
-venv/
-env/
-
-# FastAPI migrations (if you're using any ORM)
-migrations/
-
-# IDE or editor files
-.vscode/
-.idea/
-
-# macOS-specific
-.DS_Store
-
-# Log files
-*.log
-
-# .env files (for sensitive data like API keys)
-.env
-
-# Ignore system files
-Thumbs.db
-ehthumbs.db
-
-#Clones
-
-Projucer.app
-DemoRunner.app
-examples/
-modules/
-
-JuceLibraryCode/
 Builds/
 JUCE/
+.ipynb_checkpoints/
+JuceLibraryCode/
+node_modules/

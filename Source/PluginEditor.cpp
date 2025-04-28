@@ -498,7 +498,7 @@ void StreamlineAIEditor::setupCompletionUI(bool isMidi)
 
             // 4) Build absolute path to your Python script
             juce::File scriptFile = projectRoot.getChildFile("process.py");
-            juce::String cmd = "/opt/homebrew/bin/python3 \"" + scriptFile.getFullPathName() + "\"";
+            juce::String cmd = "/opt/anaconda3/envs/streamline/bin/python \"" + scriptFile.getFullPathName() + "\"";
             // adjust python path if needed
 
             juce::Logger::writeToLog("[DEBUG] Running: " + cmd);

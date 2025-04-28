@@ -4,24 +4,25 @@ Output Format: MIDI
 
 Tempo Specification: Enter a specific BPM
 
-Specific BPM: 120
-                    
-Time Signature: 4/4 (Common time)
+Specific BPM: 159
 
-Key: C Major / A Minor
+Time Signature: 6/8 (Compound duple)
 
-Instrument: Piano
+Key: Db Major / Bb Minor
 
-Genre: Rock
+Instrument: Synth
 
-Style: Standard/Traditional
+Genre: R&B
+
+Style: Progressive
 
 Measures: 16
 
-Mood: Happy
+Mood: Sad
 
 Rhythm Complexity: 50/10
 
 Melodic Complexity: 50/10
 
-Additional Notes: Make it like Kanye
+Additional Notes: 
+
