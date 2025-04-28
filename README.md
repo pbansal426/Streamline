@@ -48,9 +48,6 @@ Streamline leverages the `text2midi` library to generate MIDI data from text.  T
 
 ## Credits
 
-This project utilizes the `text2midi` library.  We would like to acknowledge the authors of the following work:
+This project utilizes the `text2midi` library. We would like to acknowledge the authors of the following work:
 
-@inproceedings{bhandari2025text2midi,title={text2midi: Generating Symbolic Music from Captions},author={Keshav Bhandari and Abhinaba Roy and Kyra Wang and Geeta Puri and Simon Colton and Dorien Herremans},booktitle={Proceedings of the 39th AAAI Conference on Artificial Intelligence (AAAI 2025)},year={2025}}
-## License
-
-[Specify the license for your project here]
+@inproceedings{bhandari2025text2midi,title={text2midi: Generating Symbolic Music from Captions},author={Keshav Bhandari and Abhinaba Roy and Kyra Wang and Geeta Puri and Simon Colton and Dorien Herremans},booktitle={Proceedings of the 39th AAAI Conference on Artificial Intelligence (AAAI 20
