@@ -10,7 +10,7 @@
     />
     <style>
       :root {
-        --bg: #0d0d0d;
+        --bg: #000000;
         --text: #ffffff;
         --accent: #6cf;
         --card-bg: #1a1a1a;
@@ -41,6 +41,12 @@
         gap: 3.5rem;
         max-width: 900px;
         margin: 0 auto;
+      }
+      .coverImage {
+        margin-top: 9rem;
+        display: block;
+        margin: auto;
+        width: 30%;
       }
       .card {
         background: var(--card-bg);
@@ -110,7 +116,11 @@
     </style>
   </head>
   <body>
-    <h1>Streamline Development Timeline</h1>
+    <img
+      class="coverImage"
+      src="assets/Streamline.png"
+      alt="Cover image of the Streamline project"><br>
+    <h1>Development Timeline</h1>
     <div class="timeline">
       <div class="card">
         <h2>Phase 1 — Core Setup</h2>
@@ -313,18 +323,16 @@
       <div class="card">
         <h2>MVP — AI Audio Generator Plugin</h2>
         <p class="timeline-date">April 2025</p>
+        <h3>
+          A plugin that uses an open source AI model to
+          generate MIDI files from text input.
+        </h3><br>
         <p>
-          A plugin that uses free AI tools (HuggingFace, Magenta, or OpenAI) to
-          generate musical content inside a DAW.
-        </p>
-        <p>
-          <strong>Goal:</strong> Convert a user text prompt (e.g., “Create a
-          simple piano melody”) into either a <strong>MIDI</strong> sequence or
-          a <strong>complete audio clip</strong>.
+          <strong>Goal:</strong> Convert user request data into a <strong>MIDI</strong> file.
         </p>
         <p><strong>Workflow:</strong></p>
         <ol>
-          <li><strong>User selects output type:</strong> MIDI or Audio.</li>
+          <li><strong>User opens the plug-in window:</strong> Attach "StreamlineAI" to a track in a DAW like Logic Pro or FL Studio.</li>
           <li>
             <strong>Interactive Questionnaire:</strong> The plugin guides the
             user through 10+ questions:
@@ -350,41 +358,38 @@
             file.
             <div class="media"><img src="assets/MVP/text.png"></div>
           </li>
+          <br><br>
           <li>
             <strong>Python Processing:</strong> The backend (a Python Script)
-            uses a Magenta AI model to produce MIDI or Audio by accessing,
+            uses an open source HuggingFace model "<a href="https://github.com/AMAAI-Lab/Text2midi">text2midi</a>" to produce MIDI by accessing,
             formatting, and sending the text in the text file.
-            <div class="media"><img src="assets/MVP/import.png"></div>
-            <div class="media"><img src="assets/MVP/pythonscipt.png"></div>
+            <div class="media"><img src="assets/MVP/imports.png"></div>
+            <div class="media"><img src="assets/MVP/terminal.png"></div>
             
           </li>
+          <br>
           <li>
-            <strong>Output:</strong> The plugin generates either:
+            <strong>Output</strong>
             <ul>
               <li>
-                <strong>MIDI:</strong> A MIDI file with the generated melody.
+                <strong>MIDI File:</strong> A MIDI file with the generated melody.
               </li>
-              <li>
-                <strong>Audio:</strong> A .wav file with the generated melody.
-              </li>
+              
             </ul>
-            The audio files are placed in a folder easily accessible from the
-            DAW.
+            The MIDI files are placed in a folder easily accessible from the
+            DAW. The use has chosen this folder beforehand.
             <!-- <div class="">
             </div>media</li> -->
-            <div class="media"><img src="assets/midi.png" alt="Generated MIDI melody displayed in piano roll"></div>
+            <div class="media"><img src="assets/MVP/finalMIDI.png" alt="Generated MIDI melody displayed in piano roll"></div>
             
-
+            <br>
           <li>
             <strong>Final Step:</strong>
             <ul>
               <li>
-                If MIDI: User imports the .mid file into their DAW’s piano roll.
+                User imports the .mid file into their DAW’s piano roll.
               </li>
-              <li>
-                If Audio: Plugin places the generated .wav clip directly on the
-                track.
-              </li>
+              
             </ul>
           </li>
         </ol>
@@ -394,11 +399,18 @@
           Video Demo Coming Soon
         </video></div>
         Video Demo Coming Soon
-      
         
     
       </div>
-    </div>
+      <div class="card">
+        <h2>Acknowledgements</h2>
+        <p>This project utilizes the <a href="https://github.com/AMAAI-Lab/Text2midi" target="_blank" rel="noopener noreferrer"><code>text2midi</code></a> library. We would like to acknowledge the authors of the following work:</p>
+        <p style="font-style: italic; color: #aaa; margin-bottom: 1rem; line-height: 1.4;">@inproceedings{bhandari2025text2midi,<br>
+        title={{text2midi: Generating Symbolic Music from Captions}},<br>
+        author={{Keshav Bhandari and Abhinaba Roy and Kyra Wang and Geeta Puri and Simon Colton and Dorien Herremans}},<br>
+        booktitle={{Proceedings of the 39th AAAI Conference on Artificial Intelligence (AAAI 20)}}</p>
+        <p style="margin-top: 1.5rem;">View the GitHub here: <a href="https://github.com/AMAAI-Lab/Text2midi" target="_blank" rel="noopener noreferrer">https://github.com/AMAAI-Lab/Text2midi</a></p>
+    </div></div>
 
     <footer>
       <p>

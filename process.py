@@ -44,7 +44,7 @@ try:
     mood = next((line.split(":", 1)[1].strip() for line in lines if "Mood:" in line), "Unknown Mood")
 
     src = f"Generate a {genre} piece for {instrument} at {tempo} BPM with a {mood} mood."
-    print(f'Generating for prompt: "{src}"')
+    print(f'Generating for prompt: "{lines}"')
 
     if genre != "Unknown Genre" and mood != "Unknown Mood":
         filename = f"{genre.lower()}_{mood.lower()}"
@@ -74,7 +74,7 @@ inputs = tokenizer(src, return_tensors='pt', padding=True, truncation=True)
 input_ids = nn.utils.rnn.pad_sequence(inputs.input_ids, batch_first=True, padding_value=0).to(device)
 attention_mask = nn.utils.rnn.pad_sequence(inputs.attention_mask, batch_first=True, padding_value=0).to(device)
 
-output = model.generate(input_ids, attention_mask, max_len=50, temperature=1)
+output = model.generate(input_ids, attention_mask, max_len=400, temperature=1)
 output_list = output[0].tolist()
 generated_midi = r_tokenizer.decode(output_list)
 generated_midi.dump_midi(output_midi_path)
