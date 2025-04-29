@@ -3,3 +3,5 @@ JUCE/
 .ipynb_checkpoints/
 JuceLibraryCode/
 node_modules/
+node_modules/
+text2midi/
